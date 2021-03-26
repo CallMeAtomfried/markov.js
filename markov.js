@@ -1,4 +1,10 @@
 module.exports = class Markov {
+  /*Read:
+    Not finished yet. Needs testing. Also, model loading will be improved. 
+    Right now a usable model needs to be passed. Format: {"w":{}} for empty models
+    Previously trained models can be passed as they are. Empty JSONs will likely crash as of now
+    
+   */
 
   this.fs = require("fs");
   this.model = {};
@@ -45,6 +51,10 @@ module.exports = class Markov {
   save(filepath) {
     this.fs.writeFile(filepath, JSON.stringify(this.model), function(){});
   }
+
+  load(filepath) {
+    
+  } 
 	
   reproduce(length, l_context){
 	
