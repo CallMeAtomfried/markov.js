@@ -34,9 +34,9 @@ module.exports = class Markov {
       } else {
         //add new data to word
         if(x<arr.length-1){
-          model.w[str].t++;
-          if(model.w[str].f[w2]==undefined) model.w[str].f[w2]=0;
-          model.w[str].f[w2]++;
+          this.model.w[str].t++;
+          if(this.model.w[str].f[w2]==undefined) this.model.w[str].f[w2]=0;
+          this.model.w[str].f[w2]++;
         }
       } 
     }
