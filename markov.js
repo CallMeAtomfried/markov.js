@@ -1,11 +1,13 @@
 module.exports = class Markov {
+	fs = require("fs");
+	this.model = {};
+
+	constructor(mk){
+		this.model = mk;
+	} 
 	
-	constructor(){
-		//idk what could go in here, maybe the models should live in this class instead of being loaded for the main script but it makes no difference, really.
-	};
 	
-	
-	learn(arr, l_context, model, path, fs){
+	learn(arr, l_context, path){
 		
 		//x in arr: Either loop through for every character in string or every word in array of words
 		for(var x in arr){
@@ -38,15 +40,17 @@ module.exports = class Markov {
 				}
 			}
 		}
-		//save updated model
-		fs.writeFile(path, JSON.stringify(model), function(){});
-		//thinking about adding return here
+		
 	}
 	
-	reproduce(length, l_context, model){
+	save(filepath) {
+		fs.writeFile(filepath, JSON.stringify(this.model), function(){});
+	}
+	
+	reproduce(length, l_context){
 		
 		//get random word to start generating
-		var start = this.randomProperty(model.w);
+		var start = this.randomProperty(this.model.w);
 		
 		//kinda stupid, afraid to change it
 		var newWord = start;
