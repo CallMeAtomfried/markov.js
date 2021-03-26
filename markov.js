@@ -14,7 +14,7 @@ module.exports = class Markov {
   } 
 	
 	
-  learn(arr, l_context, path){
+  learn(arr, l_context){
 		
     //x in arr: Either loop through for every character in string or every word in array of words
     for(var x in arr){
