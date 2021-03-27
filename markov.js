@@ -72,7 +72,7 @@ module.exports = class Markov {
     for(var i = start.length; i<length; i++){
 
       //Get next character to add onto the output depending on the last l_context characters/words
-      var add = this.getRandom(this.getRanges(output.substr(-l_context), model));
+      var add = this.getRandom(this.getRanges(output.substr(-l_context), this.model));
 
       if(add==undefined) {
         // if no data exist for word, stop generating
