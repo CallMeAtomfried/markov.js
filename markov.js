@@ -137,7 +137,7 @@ module.exports = class Markov {
   randomProperty(object) {
     //returns a random key
     var keys = Object.keys(object);
-    return keys[Math.floor(keys.length * Math.random())];
+    return keys[this.randomInt(keys.length)];
   }
 
   getRandom(ranges){
