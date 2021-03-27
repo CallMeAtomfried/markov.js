@@ -74,9 +74,8 @@ module.exports = class Markov {
       //Get next character to add onto the output depending on the last l_context characters/words
       var add = this.getRandom(this.getRanges(output.substr(-l_context), model));
 
-      if(add==null||add==undefined) {
+      if(add==undefined) {
         // if no data exist for word, stop generating
-        i = length;
         return output;
       } else {
         // else add new character to output
