@@ -130,6 +130,9 @@ module.exports = class Markov {
     }
   }
 	
+  randomInt(max) {
+    return Math.floor(Math.random()*max)
+  } 
 	
   randomProperty(object) {
     //returns a random key
