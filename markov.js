@@ -4,6 +4,7 @@ module.exports = class Markov {
     Right now a usable model needs to be passed. Format: {"w":{}} for empty models
     Previously trained models can be passed as they are. Empty JSONs will likely crash as of now
     
+    NOTE: only letter based models can be used as of now. Word based markov can theoretically be trained but not reproduced properly
    */
 
   //this.fs = require("fs");
