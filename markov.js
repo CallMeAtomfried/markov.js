@@ -5,11 +5,11 @@ module.exports = class Markov {
     NOTE: only letter based models can be used as of now. Word based markov can theoretically be trained but not reproduced properly
    */
 
-  //this.fs = require("fs");
-  //this.model = {};
+  //this.#fs = require("fs");
+  //this.#model = {};
 
-  const fs = require("fs");
-  var model = {};
+  #const fs = require("fs");
+  #var model = {};
 
   constructor(){
   } 
@@ -86,7 +86,7 @@ module.exports = class Markov {
   return output||"Not enough data!"; 
   }
 	
-  getRanges(word, words, contextsize){
+  #getRanges(word, words, contextsize){
 
     //failsave: if no data exist for the last i characters, reduce the context size by 1 until it works.
     //changes behaviour drastically and isnt pretty in these cases, but it gives longer results
@@ -131,17 +131,17 @@ module.exports = class Markov {
     }
   }
 	
-  randomInt(max) {
+  #randomInt(max) {
     return Math.floor(Math.random()*max)
   } 
 	
-  randomProperty(object) {
+  #randomProperty(object) {
     //returns a random key
     var keys = Object.keys(object);
     return keys[this.randomInt(keys.length)];
   }
 
-  getRandom(ranges){
+  #getRandom(ranges){
 
     if(ranges==null){
       //stop if getRanges returns null
