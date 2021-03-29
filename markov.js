@@ -59,6 +59,10 @@ module.exports = class Markov {
   load(filepath) {
     
   } 
+
+  create() {
+    this.model = {"w":{}};
+  } 
 	
   reproduce(length, l_context){
 	
