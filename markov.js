@@ -11,8 +11,7 @@ module.exports = class Markov {
   const fs = require("fs");
   var model = {};
 
-  constructor(mk){
-    this.model = mk;
+  constructor(){
   } 
 	
 	
