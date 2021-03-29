@@ -78,14 +78,13 @@ module.exports = class Markov {
 
       if(add==undefined) {
         // if no data exist for word, stop generating
-        return output;
+        return output||"Not enough data!";
       } else {
         // else add new character to output
         output = output + add;
       }
     }
-  output = output||"Not enough data!";
-  return output;
+  return output||"Not enough data!"; 
   }
 	
   getRanges(word, words, contextsize){
