@@ -84,6 +84,7 @@ module.exports = class Markov {
         output = output + add;
       }
     }
+  output = output||"Not enough data!";
   return output;
   }
 	
