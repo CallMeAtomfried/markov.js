@@ -74,7 +74,7 @@ module.exports = class Markov {
     for(var i = start.length; i<length; i++){
 
       //Get next character to add onto the output depending on the last l_context characters/words
-      var add = this.getRandom(this.getRanges(output.substr(-l_context), this.model));
+      var add = this.getRandom(this.getRanges(output.substr(-l_context), this.model, l_context));
 
       if(add==undefined) {
         // if no data exist for word, stop generating
@@ -87,11 +87,11 @@ module.exports = class Markov {
   return output;
   }
 	
-  getRanges(word, words){
+  getRanges(word, words, contextsize){
 
     //failsave: if no data exist for the last i characters, reduce the context size by 1 until it works.
     //changes behaviour drastically and isnt pretty in these cases, but it gives longer results
-    for(var i = 0; i < 6; i++){
+    for(var i = 0; i < contextsize; i++){
       if(words.w[word]==undefined){
         word = word.substring(1);
       }
