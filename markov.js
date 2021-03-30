@@ -141,6 +141,10 @@ module.exports = class Markov {
     return keys[this.randomInt(keys.length)];
   }
 
+  getElement(key) {
+    return this.model.w[key];
+  } 
+
   getRandom(ranges){
 
     if(ranges==null){
