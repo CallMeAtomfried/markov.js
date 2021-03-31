@@ -6,6 +6,8 @@ Update: mknew.js ironically is obsolete. The focus of the experimental features 
 
 IMPORTANT: Neither are finished and tested. The node module should be in a usable state, but as things stand i cannot test it myself. 
 
+Markov.py is WIP, will be an interconpatible port of markov.js, as in data trained with one will be possible to read with the other. 
+
 # Node module
 
 The markov.js can be put anywhere. In this example its just in the main folder. 
