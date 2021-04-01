@@ -56,7 +56,11 @@ module.exports = class Markov {
   load(filepath) {
     this.model = JSON.parse(fs.readFileSync(filename).toString());
   } 
-
+  
+  reset() {
+    this.model = {"w":{}};
+  } 
+  
   create() {
     this.model = {"w":{}};
   } 
@@ -158,7 +162,12 @@ module.exports = class Markov {
       if(rand<ranges[x][1]) return ranges[x][0];
     }
   }
+
+  search(searchString) {
+    return this.model.w[searchString];
+  }
 }
+
 
 
 
