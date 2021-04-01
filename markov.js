@@ -139,7 +139,7 @@ module.exports = class Markov {
     return Math.floor(Math.random()*max)
   } 
 	
-  #randomProperty(object) {
+  randomProperty(object) {
     //returns a random key
     var keys = Object.keys(object);
     return keys[this.randomInt(keys.length)];
@@ -163,9 +163,51 @@ module.exports = class Markov {
     }
   }
 
+  invertWeights(rangeObject) {
+    for(x in rangeObject.f) {
+      rangeObject.f[x] = rangeObject.t - rangeObject.f[x];
+    }
+    return rangeObject;
+  } 
+
   search(searchString) {
     return this.model.w[searchString];
   }
+  
+  forget(forgetString, contextSize, instances) {
+    let temp = {"w":{}} 
+    //Go through normal learning (get string and char) 
+    for(var x = 0; x<forgetString.length; x++) {
+      for(var y=context-1;y>=0; y--){
+        str += (forgetString[parseInt(x)-y]==undefined?"":forgetString[parseInt(x)-y]);
+      }
+      var w2 = forgetString[parseInt(x)+1];
+      
+      if(temp.w[str]) {
+        temp.w[str].t++;
+        if(temp.w[str].f[w2]) {
+          temp.w[str].f[w2]++;
+        } else {
+          temp.w[str].f[w2] = 1;
+        } 
+      } else {
+        temp.w[str] = {"t": 1, "f":{w2: 1}}
+      } 
+   
+    } 
+    //Decrease weight according char for string by instances
+
+    //if new weight is smaller than 0, delete entirely 
+
+    //decrease total by amount of weight reduction
+    
+  } 
+
+
+
+  replace(origString, replString) {
+    return 0;
+  } 
 }
 
 
