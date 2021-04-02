@@ -1,6 +1,6 @@
 module.exports = class Markov {
   /*Read:
-    Not finished yet. Needs testing. Also, model loading will be improved. 
+    Not finished yet. Needs testing. 
     creating a new model and loading an existing one is now possible. 
     NOTE: only letter based models can be used as of now. Word based markov can theoretically be trained but not reproduced properly
    */
