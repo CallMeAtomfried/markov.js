@@ -66,14 +66,7 @@ module.exports = class Markov {
     this.model = {"w":{}};
   }
 
-  reproduce(length, l_context) {
-    reproduce(length, l_context, null, null);
-  } 
-
-  reproduce(length, l_context, startstring) {
-    reproduce(length, l_context, startstring, null);
-  }
-
+  
   reproduce(length, l_context, startstring, endflag){
 	
     //get random word to start generating
