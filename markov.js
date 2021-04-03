@@ -8,8 +8,8 @@ module.exports = class Markov {
   //this.#fs = require("fs");
   //this.#model = {};
 
-  const fs = require("fs");
-  var model = {};
+  fs = require("fs");
+   model = {};
 
   constructor(){
   } 
@@ -32,7 +32,7 @@ module.exports = class Markov {
       if(this.model.w[str]==undefined){
         //if context doesnt exist add datapoint
         if(x<arr.length-1){
-          this.model.w[str]={"t": 1, "f":{w2: 1}};
+          this.model.w[str]={"t": 1, "f":{[w2]: 1}};
           //this.model.w[str]={};
           //this.model.w[str]["t"] = 1;
           //this.model.w[str]["f"]={};
@@ -55,7 +55,7 @@ module.exports = class Markov {
   }
 
   load(filepath) {
-    this.model = JSON.parse(fs.readFileSync(filename).toString());
+    this.model = JSON.parse(this.fs.readFileSync(filepath).toString());
   } 
   
   reset() {
