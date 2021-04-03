@@ -70,6 +70,10 @@ module.exports = class Markov {
     reproduce(length, l_context, null, null);
   } 
 
+  reproduce(length, l_context, startstring) {
+    reproduce(length, l_context, startstring, null);
+  }
+
   reproduce(length, l_context, startstring, endflag){
 	
     //get random word to start generating
@@ -92,7 +96,7 @@ module.exports = class Markov {
         output = output + add;
       }
 
-      if(output.includes(endflag)) return output
+      if(endflag&&output.includes(endflag)) return output;
     }
   return output||"Not enough data!"; 
   }
