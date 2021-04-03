@@ -184,14 +184,13 @@ module.exports = class Markov {
       var w2 = forgetString[parseInt(x)+1];
       
       if(temp.w[str]) {
-        temp.w[str].t++;
         if(temp.w[str].f[w2]) {
-          temp.w[str].f[w2]++;
+          temp.w[str].f[w2]+=instances;
         } else {
-          temp.w[str].f[w2] = 1;
+          temp.w[str].f[w2] = instances;
         } 
       } else {
-        temp.w[str] = {"t": 1, "f":{w2: 1}}
+        temp.w[str] = {"f":{w2: instances}}
       } 
    
     } 
@@ -200,6 +199,7 @@ module.exports = class Markov {
     //if new weight is smaller than 0, delete entirely 
 
     //decrease total by amount of weight reduction
+    //(recalculate sum of all weights) 
     
   } 
 
