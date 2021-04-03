@@ -89,7 +89,7 @@ module.exports = class Markov {
         output = output + add;
       }
 
-      if(endflag&&output.includes(endflag)) return output;
+      if(endflag!=undefined&&output.includes(endflag)) return output;
     }
   return output||"Not enough data!"; 
   }
