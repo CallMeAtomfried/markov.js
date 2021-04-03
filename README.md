@@ -71,7 +71,17 @@ Reproduction of text will start at a random point and only end if the specified 
 markov.reproduce(1000, 4);
 ```
 
-Start and end flags are planned which will allow you to specify what series of characters to start with as well as define a custom bail condition. This can be useful if you have text of a specific format, like a transcript of a TV episode or a HTML file. ETA unknown
+Optional start and end flags can now be provided. 
+
+```js
+markov.reproduce(1000, 4, "Start")
+```
+or
+```js
+markov.reproduce(1000, 4, "Start", "End");
+```
+
+To define an end flag but not a start flag, set the start flag to `null`
 
 ## Upcoming features
 
