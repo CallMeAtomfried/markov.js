@@ -32,10 +32,11 @@ module.exports = class Markov {
       if(this.model.w[str]==undefined){
         //if context doesnt exist add datapoint
         if(x<arr.length-1){
-          this.model.w[str]={};
-          this.model.w[str]["t"] = 1;
-          this.model.w[str]["f"]={};
-          this.model.w[str]["f"][w2]=1;
+          this.model.w[str]={"t": 1, "f":{w2: 1}};
+          //this.model.w[str]={};
+          //this.model.w[str]["t"] = 1;
+          //this.model.w[str]["f"]={};
+          //this.model.w[str]["f"][w2]=1;
           // console.log(x, parseInt(x)+1, w2);
         }
       } else {
@@ -63,12 +64,16 @@ module.exports = class Markov {
   
   create() {
     this.model = {"w":{}};
+  }
+
+  reproduce(length, l_context) {
+    reproduce(length, l_context, null, null);
   } 
-	
-  reproduce(length, l_context){
+
+  reproduce(length, l_context, startstring, endflag){
 	
     //get random word to start generating
-    var start = this.randomProperty(this.model.w);
+    var start = startstring||this.randomProperty(this.model.w);
     var output = start;
 		
     //unused, can be used to define a bail condition. 
@@ -86,6 +91,8 @@ module.exports = class Markov {
         // else add new character to output
         output = output + add;
       }
+
+      if(output.includes(endflag)) return output
     }
   return output||"Not enough data!"; 
   }
