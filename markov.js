@@ -3,8 +3,6 @@ module.exports = class Markov {
 	WIP. Some functions are unused, those are marked as such.
   */
 
-  //this.#fs = require("fs");
-  //this.#model = {};
 
   fs = require("fs");
   model = {};
@@ -18,7 +16,7 @@ module.exports = class Markov {
 		
     //x in arr: Either loop through for every character in string or every word in array of words
     //Only supports character based learning at this point
-	for(var x in arr){
+	for(var x = 0; x<arr.length-1;x++) {
       //get next character/word
       var w2 = arr[parseInt(x)+1];
 			
@@ -31,21 +29,12 @@ module.exports = class Markov {
 			 
       if(this.model.w[str]==undefined){
         //if context doesnt exist add datapoint
-        if(x<arr.length-1){
           this.model.w[str]={"t": 1, "f":{[w2]: 1}};
-          //this.model.w[str]={};
-          //this.model.w[str]["t"] = 1;
-          //this.model.w[str]["f"]={};
-          //this.model.w[str]["f"][w2]=1;
-          // console.log(x, parseInt(x)+1, w2);
-        }
       } else {
         //add new data to word
-        if(x<arr.length-1){
           this.model.w[str].t++;
           if(this.model.w[str].f[w2]==undefined) this.model.w[str].f[w2]=0;
           this.model.w[str].f[w2]++;
-        }
       } 
     }
   }
@@ -165,7 +154,42 @@ module.exports = class Markov {
   search(searchString) {
     return this.model.w[searchString];
   }
+  
+  forget(forgetString, contextSize, instances) {
+    let temp = {"w":{}} 
+	instances = instances||1
+    //Go through normal learning (get string and char) 
+    for(var x = 0; x<forgetString.length-1; x++) {
+	  var str = "";
+      for(var y=contextSize-1;y>=0; y--){
+        str += (forgetString[parseInt(x)-y]==undefined?"":forgetString[parseInt(x)-y]);
+      }
+      var w2 = forgetString[parseInt(x)+1];
+      
+	  //Check if learned word exists
+	  if(this.model.w[str]) {
+		  if(this.model.w[str].f[w2]) {
+			  //Reduce weights by amount given
+			  this.model.w[str].f[w2]-=instances;
+			  //delete if weight is smaller than 0
+			  if(this.model.w[str].f[w2]<=0) delete this.model.w[str].f[w2];
+		  }
+		  this.model.w[str].t = this.newSum(this.model.w[str].f);
+	  }
+    } 
+	//Delete all words with no data
+	for(var modelentries in this.model.w){
+	  if (Object.keys(this.model.w[modelentries].f).length===0) delete this.model.w[modelentries];
+	}
+  } 
 
+  newSum(objectToSum) {
+	var sum = 0;
+	for(var x in objectToSum) {
+	  sum += parseInt(objectToSum[x]);
+	}
+	return sum
+  }
 
   //everything beyond this point is WIP and so far unused
   invertWeights(rangeObject) {
@@ -177,34 +201,7 @@ module.exports = class Markov {
 
 
   
-  forget(forgetString, contextSize, instances) {
-    let temp = {"w":{}} 
-    //Go through normal learning (get string and char) 
-    for(var x = 0; x<forgetString.length; x++) {
-      for(var y=context-1;y>=0; y--){
-        str += (forgetString[parseInt(x)-y]==undefined?"":forgetString[parseInt(x)-y]);
-      }
-      var w2 = forgetString[parseInt(x)+1];
-      
-      if(temp.w[str]) {
-        if(temp.w[str].f[w2]) {
-          temp.w[str].f[w2]+=instances;
-        } else {
-          temp.w[str].f[w2] = instances;
-        } 
-      } else {
-        temp.w[str] = {"f":{w2: instances}}
-      } 
-   
-    } 
-    //Decrease weight according char for string by instances
 
-    //if new weight is smaller than 0, delete entirely 
-
-    //decrease total by amount of weight reduction
-    //(recalculate sum of all weights) 
-    
-  } 
 
 
 
