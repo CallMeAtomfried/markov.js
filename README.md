@@ -75,25 +75,20 @@ markov.reproduce(1000, 4, "Start", "End");
 
 To define an end flag but not a start flag, set the start flag to `null`
 
+## Corpus moderation
+
+Due to the way the data is stored, direct manipulation is not easy. It is not advised to manually edit the trained data as it can and likely will lead to problems, potentially destroying the entire set. It is therefore advised to handle moderation BEFORE the data is fed. For instances where undesirable data does make it into the dataset, the `forget()` method is available.
+
+```js
+markov.forget(string, int, <int>);
+```
+It works by reversing the learning process on the text you give it. The first two arguments are mandatory and take the string you want the model to "forget" and the context size respectively. The optional second integer is the number of instances you want it to forget at most. It defaults to 1 meaning it removes one instance of the provided text. Setting it to an arbitrary number will be the equivalent of removing that number of instances at once. Setting it to a sufficiently high number, or simply `Infinity` will delete the given word-letter combinations entirely.
+
 ## Upcoming features
 
 Ability to train the model based on words instead of characters. Everything will stay the same, but it will take an array of words instead of a string, yet still return a string.
 Word based markov will use significantly more RAM and storage but the results are even more coherent. It requires an even larger dataset for interesting results.
 
-Ability to "undo" certain learned strings and direct manipulation of the dataset. Simply pass the string you want to unlearn along with the context size just you would do with learning. Example:
-
-```js
-//It takes the string, the context size and the maximum amounts of occurrences that should be removed
-markov.forget("The big brown fox jumps over the lazy dog", 4, 2);
-```
-
-How to use it: If there is a phrase that has been trained particularly often and you want to get rid of said phrase from the dataset, use `Infinity` to get rid of it entirely.
-Note however that due to the nature of the trained data, if the phrase to be removed is, say, "This is a string", everything that is learned from this will be removed with `Infinity`,
-meaning if the training set included, say, "This is an elephant", the "This is a" part will be removed entirely.
-
-If you pass it a regular integer n, it will remove the phrase from the data set up to n times. This way you get some control over what is being available. This however can lead to problems like the generator aborting prematurely due to missing data.
-It will also only remove the occurences with the context size given, meaning if you trained it on multiple context sizes, you will need to forget all of them to remove it entirely.
-This is useful for moderation purposes, if there are some particular phrases you want it to not generate but they are already in the dataset, this would be the way to do it. 
 
 Other more direct moderation tools will be available soon, like full replacement, which is useful for word based models where certain words slip in that you want to avoid, these can be removed or replaced altogether.
 Direct access to data is also in the works for potential debugging purposes, as the models can get quite large. A search function, if you will. 
