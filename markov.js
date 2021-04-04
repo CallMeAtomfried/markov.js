@@ -12,6 +12,7 @@ module.exports = class Markov {
    model = {};
 
   constructor(){
+    this.model = {"w":{}};
   } 
 	
 	
@@ -62,9 +63,7 @@ module.exports = class Markov {
     this.model = {"w":{}};
   } 
   
-  create() {
-    this.model = {"w":{}};
-  }
+
 
   
   reproduce(length, l_context, startstring, endflag){
