@@ -1,9 +1,7 @@
 module.exports = class Markov {
   /*Read:
-    Not finished yet. Needs testing. 
-    creating a new model and loading an existing one is now possible. 
-    NOTE: only letter based models can be used as of now. Word based markov can theoretically be trained but not reproduced properly
-   */
+	WIP. Some functions are unused, those are marked as such.
+  */
 
   //this.#fs = require("fs");
   //this.#model = {};
@@ -19,7 +17,8 @@ module.exports = class Markov {
   learn(arr, l_context){
 		
     //x in arr: Either loop through for every character in string or every word in array of words
-    for(var x in arr){
+    //Only supports character based learning at this point
+	for(var x in arr){
       //get next character/word
       var w2 = arr[parseInt(x)+1];
 			
@@ -67,13 +66,10 @@ module.exports = class Markov {
 
   
   reproduce(length, l_context, startstring, endflag){
-	
+	  
     //get random word to start generating
     var start = startstring||this.randomProperty(this.model.w);
     var output = start;
-		
-    //unused, can be used to define a bail condition. 
-    var flag = "\r\n";
 
     for(var i = start.length; i<length; i++){
 
@@ -149,15 +145,14 @@ module.exports = class Markov {
   }
 
   getElement(key) {
+	//"Search" function
     return this.model.w[key];
   } 
 
   getRandom(ranges){
 
-    if(ranges==null){
-      //stop if getRanges returns null
-      return null;
-    }
+    //stop if getRanges returns null
+    if(ranges==null) return null;
 
     //get a weighted random entry from the ranges generated in getRanges
     var rand = Math.random();
@@ -165,7 +160,14 @@ module.exports = class Markov {
       if(rand<ranges[x][1]) return ranges[x][0];
     }
   }
+  
+  
+  search(searchString) {
+    return this.model.w[searchString];
+  }
 
+
+  //everything beyond this point is WIP and so far unused
   invertWeights(rangeObject) {
     for(x in rangeObject.f) {
       rangeObject.f[x] = rangeObject.t - rangeObject.f[x];
@@ -173,9 +175,7 @@ module.exports = class Markov {
     return rangeObject;
   } 
 
-  search(searchString) {
-    return this.model.w[searchString];
-  }
+
   
   forget(forgetString, contextSize, instances) {
     let temp = {"w":{}} 
