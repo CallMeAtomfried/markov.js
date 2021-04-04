@@ -24,15 +24,14 @@ var markov = new mk();
 
 ## Creating a New Model
 
-After creating the object, the model needs to be initialised using the create method. This will give you an empty set into which all the information will be dumped in the future. 
-
+An empty model is automatically created when creating the markov object. It can be reset using 
 ```js
-markov.create();
+markov.reset();
 ```
 
 ## Saving a Model
 
-To save the model, use the save() method. The filepath is strictly necessary ajd requires a full path to the file you want to save it as. 
+To save the model, use the save() method. The filepath is strictly necessary and requires a full path to the file you want to save it as. 
 It can be saved as any arbitrary format, however it is advised to save it as a JSON or TXT file. 
 
 ```js
