@@ -7,7 +7,7 @@ module.exports = class Markov {
   //this.#model = {};
 
   fs = require("fs");
-   model = {};
+  model = {};
 
   constructor(){
     this.model = {"w":{}};
@@ -70,7 +70,7 @@ module.exports = class Markov {
     //get random word to start generating
     var start = startstring||this.randomProperty(this.model.w);
     var output = start;
-
+	if(!start) throw "Cannot generate text with empty models";
     for(var i = start.length; i<length; i++){
 
       //Get next character to add onto the output depending on the last l_context characters/words
