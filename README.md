@@ -1,11 +1,4 @@
-markov.js is the node module, mknew.js is the standalone console version. 
-
-mknew also has a few non functional experimental stuff in it like image markov. dont touch
-
-Update: mknew.js ironically is obsolete. The focus of the experimental features was image markov, which however will not be necessary once word based markov is properly implemented. Its not working anyway so theres that. 
-
-IMPORTANT: Neither are finished and tested. The node module should be in a usable state, but as things stand i cannot test it myself. 
-
+markov.js is the node module. mkney.js is obsolete experimental stuff and does not work properly. 
 Markov.py is WIP, will be an interconpatible port of markov.js, as in data trained with one will be possible to read with the other. 
 
 # Node module
