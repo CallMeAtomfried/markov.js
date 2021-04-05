@@ -121,7 +121,10 @@ module.exports = class Markov {
     
   learn(arr, l_context){
     if(typeof l_context !== "number") throw TypeError(`Markov.learn expects learn(string, number), got learn(${typeof arr}, ${typeof l_context})`);
+	if(typeof arr === "string"&&this.model.wordbased === true) throw Error("Cant train word based models with letter based input");
+	if(typeof arr === "object"&&this.model.wordbased === false) throw Error("Can't train letter based models with word based input");
 	this.model.wordbased = (typeof arr === "object")
+	
 	// console.log(l_context, this.model.wordbased);
     //x in arr: Either loop through for every character in string or every word in array of words
     //Only supports character based learning at this point
@@ -254,5 +257,23 @@ module.exports = class Markov {
     return 0;
   } 
   
+  merge(mergeModel) {
+	  //Merge this.model with given model
+	  if(mergeModel.wordbased != this.model.wordbased) throw Error("Can't merge letter based models with word based models!");
+	  for(var x in mergeModel.w) {
+		  if(this.model.w[x] == undefined) {
+			  this.model.w[x] = mergeModel.w[x];
+		  } else {
+			  this.model.w[x].t += mergeModel.w[x].t;
+			  for(var y in mergeModel.w[x].f) {
+				  if(this.model.w[x].f[x] == undefined) {
+					  this.model.w[x].f[y] = mergeModel.w[x].f[y];
+				  } else {
+					  this.model.w[x].f[y] += mergeModel.w[x].f[y];
+				  }
+			  }
+		  }
+	  }
+  }
   
 }
