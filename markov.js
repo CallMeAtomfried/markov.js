@@ -180,6 +180,9 @@ module.exports = class Markov {
     var start = startstring || randomProperty(this.model.w);
     var output = this.model.wordbased?start.split(" "):start;
     if(!start) throw "Cannot generate text with empty models";
+	
+	
+	
     for(var i = start.length; i<length; i++){
 
       //Get next character to add onto the output depending on the last l_context characters/words
@@ -207,7 +210,7 @@ module.exports = class Markov {
 	  
       
 
-      if(endflag != undefined && output.includes(endflag)) return output;
+      if(endflag != undefined && output.endsWith(endflag) && output != endflag) return output;
     }
   if(!output) throw new Error("No output data", this, 82)
   return output || "Not enough data!"; 
