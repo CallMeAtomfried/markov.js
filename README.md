@@ -53,6 +53,8 @@ markov.learn("Your Text", 4);
 
 You can continuously feed the object more and more data and it will simply "append" the new data instead of retraining the model. However this can not be undone as of now due to the nature of the saved data. A solution is being worked on. 
 
+To learn based on characters, pass a string as the first argument. The module will return a string. To learn based on words or other types, simply pass an array. The result will also be an array. Note that word based markov models take up more RAM and storage, should you save the model. Do NOT mix character and word based learning in the same model. It does not yet differenciate between these two and thus it can lead to problems.
+
 ## Reproducing
 
 To generate new text, call the reproduce method. It takes two integers, the first being the maximum length of the text that is to be generated, the second one is the context size it should use to generate text. 
@@ -74,6 +76,8 @@ markov.reproduce(1000, 4, "Start", "End");
 ```
 
 To define an end flag but not a start flag, set the start flag to `null`
+
+Depending on what you have trained, you will receive either a string or an array.
 
 ## Corpus moderation
 
