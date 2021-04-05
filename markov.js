@@ -179,14 +179,11 @@ module.exports = class Markov {
     //get random word to start generating
     var start = startstring || randomProperty(this.model.w);
     var output = this.model.wordbased?start.split(" "):start;
-    if(!start) throw "Cannot generate text with empty models";
+    if(!start) throw Error("Cannot generate text with empty models");
 	
-	
-	
-    for(var i = start.length; i<length; i++){
-
-      //Get next character to add onto the output depending on the last l_context characters/words
-	  if(this.model.wordbased) {
+	if(this.model.wordbased){
+		//Loop for word based generation
+		for(var i = start.length; i<length; i++){
 		  var check = ""
 		  for(var x = l_context; x >= 0; x--) {
 			  check += (output[output.length-x]||"") + " ";
@@ -195,9 +192,12 @@ module.exports = class Markov {
 		  var add = getRandom(getWordRanges(check, this.model, l_context))
 		  if(add == null) return output
 		  output[output.length] = add
-		  
-	  } else {
-		  
+		  if(endflag != undefined && output.endsWith(endflag) && output != endflag) return output;
+		}
+		
+	} else {
+		//loop for letter based generation
+		for(var i = start.length; i<length; i++){
 		  var add = getRandom(getRanges(output.substr(-l_context), this.model, l_context));
 		  if(add == undefined) {
 			// if no data exist for word, stop generating
@@ -206,12 +206,12 @@ module.exports = class Markov {
 			// else add new character to output
 			output = output + add;
 		  }
-      }
-	  
-      
-
-      if(endflag != undefined && output.endsWith(endflag) && output != endflag) return output;
-    }
+		  if(endflag != undefined && output.endsWith(endflag) && output != endflag) return output;
+		}
+		
+	}
+	
+    
   if(!output) throw new Error("No output data", this, 82)
   return output || "Not enough data!"; 
   }
