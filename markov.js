@@ -1,13 +1,12 @@
-
 //PRIVATE METHODS TO PREVENT USER MESSING THINGS UP 
 function getRanges(word, words, contextsize){
     
     //failsave: if no data exist for the last i characters, reduce the context size by 1 until it works.
     //changes behaviour drastically and isnt pretty in these cases, but it gives longer results
     for(var i = 0; i < contextsize; i++){
-      if(words.w[word]==undefined){
-        word = word.substring(1);
-      }
+	  if(words.w[word]==undefined){
+		word = word.substring(1);
+	  }
     }
         
     if(word.length==0){
@@ -44,6 +43,25 @@ function getRanges(word, words, contextsize){
       return ranges;
     }
   }
+  
+function getWordRanges(word, model, context) {
+  if(model.w[word]!=undefined) {
+      var followup = model.w[word].f
+	  var ranges = []
+	  var totalrange = 0
+	  var keys = Object.keys(model.w[word].f);
+	  // console.log(keys);
+	  for(x in keys) {
+		  // console.log(keys[x]);
+		  ranges[x] = [keys[x], totalrange+(parseFloat(followup[keys[x]])/parseFloat(model.w[word].t))];
+		  totalrange += (parseFloat(followup[keys[x]])/parseFloat(model.w[word].t));
+	  }
+	  return ranges
+  } else {
+	  return null
+  }
+  
+}
     
 function randomInt(max) {
     return Math.floor(Math.random()*max)
@@ -104,8 +122,9 @@ module.exports = class Markov {
     
     
   learn(arr, l_context){
-    
     if(typeof l_context !== "number") throw TypeError(`Markov.learn expects learn(string, number), got learn(${typeof arr}, ${typeof l_context})`);
+	this.model.wordbased = (typeof arr === "object")
+	// console.log(l_context, this.model.wordbased);
     //x in arr: Either loop through for every character in string or every word in array of words
     //Only supports character based learning at this point
     for(var x = 0; x<arr.length-1;x++) {
@@ -114,20 +133,29 @@ module.exports = class Markov {
             
       var str = "";
       //get the previous characters/words depending on specified context size
-      for(var y=l_context-1;y>=0; y--){
-        str = str + (arr[parseInt(x)-y]==undefined?"":arr[parseInt(x)-y]);
-      }
-            
-             
-      if(this.model.w[str]==undefined){
+	  if(this.model.wordbased) {
+		for(var y = l_context-1; y>=0; y--) {
+		  str += ((arr[parseInt(x)-y]==undefined?"":arr[parseInt(x)-y])+ " ");
+		}
+		str = str.trim();
+      } else {
+		  for(var y=l_context-1;y>=0; y--){
+			str += (arr[parseInt(x)-y]==undefined?"":arr[parseInt(x)-y]);
+		  }
+	  }
+	  
+      // console.log(this.model.w[str])    
+      if(this.model.w[str]===undefined){
         //if context doesnt exist add datapoint
           this.model.w[str]={"t": 1, "f":{[w2]: 1}};
       } else {
         //add new data to word
           this.model.w[str].t++;
+		  if(this.model.w[str].f == undefined) this.model.w[str].f = {}
           if(this.model.w[str].f[w2]==undefined) this.model.w[str].f[w2]=0;
           this.model.w[str].f[w2]++;
       } 
+	  
     }
   }
     
@@ -152,20 +180,34 @@ module.exports = class Markov {
     if(typeof length !== "number"||typeof l_context!== "number") throw TypeError(`Markov.reproduce expexts reproduce(number, number), got reproduce(${typeof length}, ${typeof l_context})`)
     //get random word to start generating
     var start = startstring||randomProperty(this.model.w);
-    var output = start;
+    var output = this.model.wordbased?start.split(" "):start;
     if(!start) throw "Cannot generate text with empty models";
     for(var i = start.length; i<length; i++){
 
       //Get next character to add onto the output depending on the last l_context characters/words
-      var add = getRandom(getRanges(output.substr(-l_context), this.model, l_context));
-
-      if(add==undefined) {
-        // if no data exist for word, stop generating
-        return output||"Not enough data!";
-      } else {
-        // else add new character to output
-        output = output + add;
+	  if(this.model.wordbased) {
+		  var check = ""
+		  for(var x = l_context; x>=0; x--) {
+			  check += (output[output.length-x]||"") + " ";
+		  }
+		  check = check.trim()
+		  var add = getRandom(getWordRanges(check, this.model, l_context))
+		  if(add==null) return output
+		  output[output.length] = add
+		  
+	  } else {
+		  
+		  var add = getRandom(getRanges(output.substr(-l_context), this.model, l_context));
+		  if(add==undefined) {
+			// if no data exist for word, stop generating
+			return output||"Not enough data!";
+		  } else {
+			// else add new character to output
+			output = output + add;
+		  }
       }
+	  
+      
 
       if(endflag!=undefined&&output.includes(endflag)) return output;
     }
@@ -207,22 +249,9 @@ module.exports = class Markov {
       if (Object.keys(this.model.w[modelentries].f).length===0) delete this.model.w[modelentries];
     }
   } 
-
-
-
-
-  
-
-
-
-
-  replace(origString, replString) {
+ replace(origString, replString) {
     return 0;
   } 
   
   
 }
-
-
-
-
