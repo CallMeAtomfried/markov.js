@@ -1,18 +1,18 @@
 markov.js is the node module. mkney.js is obsolete experimental stuff and does not work properly. 
-Markov.py is WIP, will be an interconpatible port of markov.js, as in data trained with one will be possible to read with the other. 
+Markov.py is WIP, will be an intercompatible port of markov.js, as in data trained with one will be possible to read with the other. 
 
 # Node module
 
-The markov.js can be put anywhere. In this example its just in the main folder. 
+The markov.js can be put anywhere. In the examples, it will be located in the main folder. 
 
 ```js
-const mk = require("./markov.js");
+const Markov = require("./markov.js");
 ```
 
 It consists of a class called `Markov`, which contains all the required functionality. 
 
 ```js
-var markov = new mk();
+var markov = new Markov();
 ```
 
 ## Creating a New Model
@@ -87,6 +87,23 @@ Due to the way the data is stored, direct manipulation is not easy. It is not ad
 markov.forget(string, int, <int>);
 ```
 It works by reversing the learning process on the text you give it. The first two arguments are mandatory and take the string you want the model to "forget" and the context size respectively. The optional second integer is the number of instances you want it to forget at most. It defaults to 1 meaning it removes one instance of the provided text. Setting it to an arbitrary number will be the equivalent of removing that number of instances at once. Setting it to a sufficiently high number, or simply `Infinity` will delete the given word-letter combinations entirely.
+
+## Merging models
+
+Merging models can only be done if both models are of the same type. To prevent unwanted behaviour, merge() will throw an error when attempting to do so. 
+To merge models, simply pass another model to the function. If they are the same type, context size, just like with learning, is irrelevant, and multiple context sizes are supported for both letter and word based models.
+
+```js
+const Markov = require("./markov.js");
+var markov = new Markov();
+var anotherMarkov = new Markov();
+
+markov.learn("some arbitrary string", 4);
+anotherMarkov.learn("another arbitrary string", 4);
+
+markov.merge(anotherMarkov.model);
+```
+
 
 ## Upcoming features
 
