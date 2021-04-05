@@ -1,15 +1,14 @@
 //PRIVATE METHODS TO PREVENT USER MESSING THINGS UP 
 function getRanges(word, words, contextsize){
-    
     //failsave: if no data exist for the last i characters, reduce the context size by 1 until it works.
     //changes behaviour drastically and isnt pretty in these cases, but it gives longer results
     for(var i = 0; i < contextsize; i++){
-	  if(words.w[word]==undefined){
+	  if(words.w[word] == undefined){
 		word = word.substring(1);
 	  }
     }
         
-    if(word.length==0){
+    if(word.length == 0){
       //return null if nothing is found
       return null;
     } else {
@@ -17,17 +16,17 @@ function getRanges(word, words, contextsize){
       var total = words.w[word]["t"];
 
       //failsave
-      if(total==undefined) total = 1;
+      if(total == undefined) total = 1;
       
       //get the map of all characters following a word and the amount of occurences
       var followup = words.w[word].f;
       var nw = word;
 
       //another failsave that tries to get a random word to continue checking. again, unfavorable but it saves the whole thing with smaller models
-      while(followup==undefined){
+      while(followup == undefined){
         nw = nw.substr(1);
         followup = words.w[nw].f;
-        if(nw="") followup = randomProperty(words.w);
+        if(nw == "") followup = randomProperty(words.w);
       }
 
       //get the characters that follow the word
@@ -37,15 +36,15 @@ function getRanges(word, words, contextsize){
 
       //calculate the probabilities
       for(var x in keys){
-        ranges[x]=[keys[x], totalrange+(parseFloat(followup[keys[x]])/parseFloat(total))];
-        totalrange+=(parseFloat(followup[keys[x]])/parseFloat(total));
+        ranges[x] = [keys[x], totalrange + (parseFloat(followup[keys[x]]) / parseFloat(total))];
+        totalrange += (parseFloat(followup[keys[x]]) / parseFloat(total));
       }
       return ranges;
     }
   }
   
 function getWordRanges(word, model, context) {
-  if(model.w[word]!=undefined) {
+  if(model.w[word] != undefined) {
       var followup = model.w[word].f
 	  var ranges = []
 	  var totalrange = 0
@@ -53,8 +52,8 @@ function getWordRanges(word, model, context) {
 	  // console.log(keys);
 	  for(x in keys) {
 		  // console.log(keys[x]);
-		  ranges[x] = [keys[x], totalrange+(parseFloat(followup[keys[x]])/parseFloat(model.w[word].t))];
-		  totalrange += (parseFloat(followup[keys[x]])/parseFloat(model.w[word].t));
+		  ranges[x] = [keys[x], totalrange + (parseFloat(followup[keys[x]]) / parseFloat(model.w[word].t))];
+		  totalrange += (parseFloat(followup[keys[x]]) / parseFloat(model.w[word].t));
 	  }
 	  return ranges
   } else {
@@ -64,7 +63,7 @@ function getWordRanges(word, model, context) {
 }
     
 function randomInt(max) {
-    return Math.floor(Math.random()*max)
+    return Math.floor(Math.random() * max)
   } 
     
 function randomProperty(object) {
@@ -79,14 +78,13 @@ function getElement(key) {
   } 
 
 function getRandom(ranges){
-
-    //stop if getRanges returns null
-    if(ranges==null) return null;
+	//stop if getRanges returns null
+    if(ranges == null) return null;
 
     //get a weighted random entry from the ranges generated in getRanges
     var rand = Math.random();
     for(var x in ranges){
-      if(rand<ranges[x][1]) return ranges[x][0];
+      if(rand < ranges[x][1]) return ranges[x][0];
     }
   }
   
@@ -127,32 +125,32 @@ module.exports = class Markov {
 	// console.log(l_context, this.model.wordbased);
     //x in arr: Either loop through for every character in string or every word in array of words
     //Only supports character based learning at this point
-    for(var x = 0; x<arr.length-1;x++) {
+    for(var x = 0; x < arr.length-1; x++) {
       //get next character/word
       var w2 = arr[parseInt(x)+1];
             
       var str = "";
       //get the previous characters/words depending on specified context size
 	  if(this.model.wordbased) {
-		for(var y = l_context-1; y>=0; y--) {
-		  str += ((arr[parseInt(x)-y]==undefined?"":arr[parseInt(x)-y])+ " ");
+		for(var y = l_context-1; y >= 0; y--) {
+		  str += ((arr[parseInt(x)-y] == undefined?"":arr[parseInt(x)-y])+ " ");
 		}
 		str = str.trim();
       } else {
-		  for(var y=l_context-1;y>=0; y--){
-			str += (arr[parseInt(x)-y]==undefined?"":arr[parseInt(x)-y]);
+		  for(var y = l_context-1; y >= 0; y--){
+			str += (arr[parseInt(x)-y] == undefined?"":arr[parseInt(x)-y]);
 		  }
 	  }
 	  
       // console.log(this.model.w[str])    
-      if(this.model.w[str]===undefined){
+      if(this.model.w[str] === undefined){
         //if context doesnt exist add datapoint
-          this.model.w[str]={"t": 1, "f":{[w2]: 1}};
+          this.model.w[str] = {"t": 1, "f":{[w2]: 1}};
       } else {
         //add new data to word
           this.model.w[str].t++;
 		  if(this.model.w[str].f == undefined) this.model.w[str].f = {}
-          if(this.model.w[str].f[w2]==undefined) this.model.w[str].f[w2]=0;
+          if(this.model.w[str].f[w2] == undefined) this.model.w[str].f[w2]=0;
           this.model.w[str].f[w2]++;
       } 
 	  
@@ -177,9 +175,9 @@ module.exports = class Markov {
 
   
   reproduce(length, l_context, startstring, endflag){
-    if(typeof length !== "number"||typeof l_context!== "number") throw TypeError(`Markov.reproduce expexts reproduce(number, number), got reproduce(${typeof length}, ${typeof l_context})`)
+    if(typeof length !== "number" || typeof l_context !== "number") throw TypeError(`Markov.reproduce expexts reproduce(number, number), got reproduce(${typeof length}, ${typeof l_context})`)
     //get random word to start generating
-    var start = startstring||randomProperty(this.model.w);
+    var start = startstring || randomProperty(this.model.w);
     var output = this.model.wordbased?start.split(" "):start;
     if(!start) throw "Cannot generate text with empty models";
     for(var i = start.length; i<length; i++){
@@ -187,20 +185,20 @@ module.exports = class Markov {
       //Get next character to add onto the output depending on the last l_context characters/words
 	  if(this.model.wordbased) {
 		  var check = ""
-		  for(var x = l_context; x>=0; x--) {
+		  for(var x = l_context; x >= 0; x--) {
 			  check += (output[output.length-x]||"") + " ";
 		  }
 		  check = check.trim()
 		  var add = getRandom(getWordRanges(check, this.model, l_context))
-		  if(add==null) return output
+		  if(add == null) return output
 		  output[output.length] = add
 		  
 	  } else {
 		  
 		  var add = getRandom(getRanges(output.substr(-l_context), this.model, l_context));
-		  if(add==undefined) {
+		  if(add == undefined) {
 			// if no data exist for word, stop generating
-			return output||"Not enough data!";
+			return output || "Not enough data!";
 		  } else {
 			// else add new character to output
 			output = output + add;
@@ -209,10 +207,10 @@ module.exports = class Markov {
 	  
       
 
-      if(endflag!=undefined&&output.includes(endflag)) return output;
+      if(endflag != undefined && output.includes(endflag)) return output;
     }
   if(!output) throw new Error("No output data", this, 82)
-  return output||"Not enough data!"; 
+  return output || "Not enough data!"; 
   }
     
   
@@ -224,12 +222,12 @@ module.exports = class Markov {
   
   forget(forgetString, contextSize, instances) {
     let temp = {"w":{}} 
-    instances = instances||1
+    instances = instances || 1
     //Go through normal learning (get string and char) 
-    for(var x = 0; x<forgetString.length-1; x++) {
+    for(var x = 0; x < forgetString.length-1; x++) {
       var str = "";
-      for(var y=contextSize-1;y>=0; y--){
-        str += (forgetString[parseInt(x)-y]==undefined?"":forgetString[parseInt(x)-y]);
+      for(var y = contextSize-1; y >= 0; y--){
+        str += (forgetString[parseInt(x)-y] == undefined?"":forgetString[parseInt(x)-y]);
       }
       var w2 = forgetString[parseInt(x)+1];
       
@@ -237,16 +235,16 @@ module.exports = class Markov {
       if(this.model.w[str]) {
           if(this.model.w[str].f[w2]) {
               //Reduce weights by amount given
-              this.model.w[str].f[w2]-=instances;
+              this.model.w[str].f[w2] -= instances;
               //delete if weight is smaller than 0
-              if(this.model.w[str].f[w2]<=0) delete this.model.w[str].f[w2];
+              if(this.model.w[str].f[w2] <= 0) delete this.model.w[str].f[w2];
           }
           this.model.w[str].t = this.newSum(this.model.w[str].f);
       }
     } 
     //Delete all words with no data
     for(var modelentries in this.model.w){
-      if (Object.keys(this.model.w[modelentries].f).length===0) delete this.model.w[modelentries];
+      if (Object.keys(this.model.w[modelentries].f).length === 0) delete this.model.w[modelentries];
     }
   } 
  replace(origString, replString) {
