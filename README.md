@@ -128,5 +128,5 @@ npm install --save jimp
 
 To use main.js, just run
 ```
-node main.js "filename.png";
+node main.js "filename.png"
 ```
