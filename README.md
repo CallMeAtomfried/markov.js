@@ -1,5 +1,6 @@
 markov.js is the node module. mkney.js is obsolete experimental stuff and does not work properly. 
 Markov.py is WIP, will be an intercompatible port of markov.js, as in data trained with one will be possible to read with the other. 
+main.js is a console implementation of image markov using markov.js. Its run from the commandline. Details below
 
 # Node module
 
@@ -113,3 +114,19 @@ Word based markov will use significantly more RAM and storage but the results ar
 
 Other more direct moderation tools will be available soon, like full replacement, which is useful for word based models where certain words slip in that you want to avoid, these can be removed or replaced altogether.
 Direct access to data is also in the works for potential debugging purposes, as the models can get quite large. A search function, if you will. 
+
+# Image Markov
+
+main.js requires markov.js to run, but is a quick console implementation. You will also need the folders. Put your input images in the inputImages folder, your output gets put in outputImages. 
+
+It uses Jimp to read and write the images. More information on [JIMP!](https://www.npmjs.com/package/jimp)
+
+```
+npm install --save jimp
+```
+
+
+To use main.js, just run
+```
+node main.js "filename.png";
+```
