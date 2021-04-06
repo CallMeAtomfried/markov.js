@@ -1,6 +1,6 @@
 markov.js is the node module. mkney.js is obsolete experimental stuff and does not work properly. 
 Markov.py is WIP, will be an intercompatible port of markov.js, as in data trained with one will be possible to read with the other. 
-main.js is a console implementation of image markov using markov.js. Its run from the commandline. Details below
+main.js is a console implementation of image markov using markov.js. Its run from the commandline. Details [HERE](https://github.com/CallMeAtomfried/notmarkov/blob/main/README.md#image-markov)
 
 # Node module
 
