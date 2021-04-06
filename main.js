@@ -1,48 +1,27 @@
 const Markov=require("./markov.js");
 const Jimp = require("jimp");
 const fs = require("fs");
-// var markov = new Markov();
-var markovFull = new Markov();
-// var markovR = new Markov();
-// var markovG = new Markov();
-// var markovB = new Markov();
 
-
-//TEXT GENERATION
-		// markov.load("./wordbaseddiscord.json");
-
-		// console.log("\n\n");
-
-
-		// for(var x = 0; x<10; x++){
-			// var date1 = Date.now()
-			// var newMSG = markov.reproduce(1000, 6, "\n", "\n");
-			// var date2 = Date.now()
-			// console.log((date2-date1 + "ms: "), newMSG.trim())
-		// }
-		// for(var x = 0; x<10; x++){
-			// var date1 = Date.now()
-			// var newMSG = markov.reproduce(1000, 6, "\n", "\n");
-			// var date2 = Date.now()
-			// console.log((date2-date1 + "ms: "), newMSG.trim())
-		// }
-		// console.log("\n\n");
-
-
-// markovFull.load("./imagedata/horror.json");
-
-// markovR.load("./imagedata/rgbtest_r.json");
-// markovG.load("./imagedata/rgbtest_g.json");
-// markovB.load("./imagedata/rgbtest_b.json");
 
 
 //          PATH TO IMAGE
+
 Jimp.read('./imagedata/imgcrop.png')
   .then(image => {
 	  //Optional resize
 	  // image.resize(256,256);
 	  
-	  //Old stripy generation
+	  
+	  //New and improved generation
+	  
+	  //                 Only change this.
+	  //                 this is the model save path
+	  learnImage(image, "./imagedata/imgcrop.json");
+	  //                   and this is the image save path
+	  generateImage(image, "./imagedata/imgcrop.json", "./imagedata/imgcrop2.png");
+  
+  
+  //Old stripy generation
 	  // learnImageFullColor(image, markovFull, "./imagedata/maeglin.json", 2);
 	  // reproduceImageFullColor(image, markovFull, "marglinnew.png", 2);
 	  
@@ -51,17 +30,13 @@ Jimp.read('./imagedata/imgcrop.png')
 	  // learnImageRGB(image, markovR, markovB, markovG, "./imagedata/rgbtest");
 	  // reproduceRGB(image, markovR, markovB, markovB, "./imagedata/rgbtest.png");
 	  
-	  //New and improved generation
-	  
-	  //                           Only change this.
-	  //                           this is the model save path
-	  learnNew(image, markovFull, "./imagedata/imgcrop.json");
-	//                             and this is the image save path
-	  repNew(image, markovFull, "./imagedata/imgcrop2.png");
+  
+  
   })
   
 
-function learnNew(image, model, filepath) {
+function learnImage(image, filepath) {
+	var model = new Markov();
 	cols = [];
 	for(var x = 1; x<image.bitmap.width; x++) {
 		for(var y = 1; y<image.bitmap.height; y++) {
@@ -79,12 +54,21 @@ function learnNew(image, model, filepath) {
 			model.learn(faily, 1);
 			
 		}
+		process.stdout.clearLine();
+		process.stdout.cursorTo(0);
+		process.stdout.write(`Learning: ${x}/${image.bitmap.width}`);
 		
 	}
+	process.stdout.clearLine();
+	process.stdout.cursorTo(0);
+	console.log("Done learning");
 	model.save(filepath)
 }
 
-function repNew(image, model, imagePath) {
+function generateImage(image, modelPath, imagePath) {
+	var markovFull = new Markov();
+	markovFull.load(modelPath);
+	
 	for(var x = 1; x<image.bitmap.width; x++) {
 		for(var y = 1; y<image.bitmap.height; y++) {
 			var dColX = image.getPixelColor(x-1, y  );
@@ -92,16 +76,22 @@ function repNew(image, model, imagePath) {
 			
 			
 			var dCol  = dColX.toString() + " " + dColY.toString();
-			var newD  = model.reproduce(3, 2, dCol)
+			var newD  = markovFull.reproduce(3, 2, dCol)
 			var nCol  = parseInt(newD[2])
 			
-			if(isNaN(nCol)) nCol = parseInt(model.reproduce(2, 1, dColX.toString())[1]);
-			if(isNaN(nCol)) nCol = parseInt(model.reproduce(2, 1, dColY.toString())[1]);
+			if(isNaN(nCol)) nCol = parseInt(markovFull.reproduce(2, 1, dColX.toString())[1]);
+			if(isNaN(nCol)) nCol = parseInt(markovFull.reproduce(2, 1, dColY.toString())[1]);
 			
 			// console.log(x, y, dCol, newD, nCol)
 			image.setPixelColor(nCol, x, y);
 		}
+		process.stdout.clearLine();
+		process.stdout.cursorTo(0);
+		process.stdout.write(`Generating: ${x}/${image.bitmap.width}`);
 	}
+	process.stdout.clearLine();
+	process.stdout.cursorTo(0);
+	console.log("Done generating. Check file")
 	image.write(imagePath);
 }
   
@@ -119,7 +109,10 @@ function reproduceRGB(image, modelRed, modelGreen, modelBlue, imagePath) {
 	image.write(imagePath);
 }
 
-function learnImageRGB(image, modelRed, modelGreen, modelBlue, filepath) {
+function learnImageRGB(image, filepath) {
+	var markovR = new Markov();
+	var markovG = new Markov();
+	var markovB = new Markov();
 	colR = [];
 	colG = [];
 	colB = [];
@@ -136,9 +129,9 @@ function learnImageRGB(image, modelRed, modelGreen, modelBlue, filepath) {
 	modelRed.learn(colR, 2);
 	modelGreen.learn(colG, 2);
 	modelBlue.learn(colB, 2);
-	markovR.save(filepath + "_r.json");
-	markovR.save(filepath + "_g.json");
-	markovR.save(filepath + "_b.json");
+	modelRed.save(filepath + "_r.json");
+	modelGreen.save(filepath + "_g.json");
+	modelBlue.save(filepath + "_b.json");
 }	
   
 

@@ -162,7 +162,7 @@ module.exports = class Markov {
     
   save(filepath) {
     if(!filepath) throw TypeError(`Markov.save expects save(string), got save(${typeof filepath})`);
-    this.fs.writeFile(filepath, JSON.stringify(this.model), function(){});
+    this.fs.writeFileSync(filepath, JSON.stringify(this.model), function(){});
   }
 
   load(filepath) {
@@ -183,10 +183,10 @@ module.exports = class Markov {
     var start = startstring || randomProperty(this.model.w);
     var output = this.model.wordbased?start.split(" "):start;
     if(!start) throw Error("Cannot generate text with empty models");
-	
 	if(this.model.wordbased){
 		//Loop for word based generation
-		for(var i = start.length; i<length; i++){
+		for(var i = output.length; i<length; i++){
+		
 		  var check = ""
 		  for(var x = l_context; x >= 0; x--) {
 			  check += (output[output.length-x]||"") + " ";
@@ -260,6 +260,7 @@ module.exports = class Markov {
   merge(mergeModel) {
 	  //Merge this.model with given model
 	  if(mergeModel.wordbased != this.model.wordbased) throw Error("Can't merge letter based models with word based models!");
+	  if(mergeModel.w == undefined) throw Error("Can't merge empty model");
 	  for(var x in mergeModel.w) {
 		  if(this.model.w[x] == undefined) {
 			  this.model.w[x] = mergeModel.w[x];
