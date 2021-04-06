@@ -2,11 +2,9 @@ const Markov=require("./markov.js");
 const Jimp = require("jimp");
 const fs = require("fs");
 
-
-
 //          PATH TO IMAGE
-
-Jimp.read('./imagedata/imgcrop.png')
+var filename = process.argv[2]
+Jimp.read('./imagedata/inputImages/' + filename)
   .then(image => {
 	  //Optional resize
 	  // image.resize(256,256);
@@ -16,9 +14,9 @@ Jimp.read('./imagedata/imgcrop.png')
 	  
 	  //                 Only change this.
 	  //                 this is the model save path
-	  learnImage(image, "./imagedata/imgcrop.json");
+	  learnImage(image, "./imagedata/models/" + filename + ".json");
 	  //                   and this is the image save path
-	  generateImage(image, "./imagedata/imgcrop.json", "./imagedata/imgcrop2.png");
+	  generateImage(image, "./imagedata/models/" + filename + ".json", "./imagedata/outputImages/" + filename);
   
   
   //Old stripy generation
