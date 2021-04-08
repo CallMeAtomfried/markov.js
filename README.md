@@ -126,7 +126,8 @@ npm install --save jimp
 ```
 
 
-To use main.js, just run
+To use imagemarkov.js, just run
 ```
-node main.js "filename.png"
+node imagemarkov.js "filename.png" -l -g
 ```
+Where -l will learn the image and -g will generate it. Trying to generate an image without learning first doesnt work for obvious reasons. 
