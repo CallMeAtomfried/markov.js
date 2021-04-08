@@ -16,6 +16,86 @@ It consists of a class called `Markov`, which contains all the required function
 var markov = new Markov();
 ```
 
+## How does it work?
+
+The "learner" loops through every element, keeping track of the current element as well as the previous n-1 elements, where n is the total state size (henceforth called "context"), as well as the next element. It then combines the total context into one datapoint and keeps track of all the different elements that follow this combination of characters throughout the input. 
+
+For example, let the input be "Hello world!" and the context size be 1. It will loop through the characters because it is a string. 
+At first it finds a "H".
+
+`There is nothing preceeding this "H", but since the context size is 1 anyway, it makes no difference. If the context size was bigger, it will adjust the context size for data at the beginning automatically. `
+
+For the "H" that it found, the next character would be "e". It now generates a datapoint in the model like this:
+`{"H": {t: 1, f:{"e": 1}}}`
+"H" is the character it found, t would be the total times it has found a "H" while the object f:{} contains a list of all characters that it found that follow any "H" character in the input along with the respective occurences of that character.
+
+There are two occurences of "o" in "Hello world!", meaning the datapoint for "o" would look like this:
+```json
+{
+  "o": {
+    t: 2,
+    f: {
+      " ": 1,
+      "r": 1
+    }
+  }
+}
+```
+
+The generator will first analyse the start flag provided, or if none is found, will choose a starting point randomly.
+It will then look at the last n elements in the already generated output and look up the according datapoint, receiving a list of weights for all the possibilities for how to continue. For this, the generator will first define cumulative boundaries for each element based on its weight, clamped between 0 and 1. Example:
+
+```json
+{
+  "a": {
+    t: 20,
+    f: {
+      "b": 3,
+      "c": 6,
+      "d": 8,
+      "e": 2,
+      "f": 1
+    }
+  }
+}
+```
+The weights defined in the model itself are the raw occurences. The cumulative weights in this case would look like this:
+
+```json
+{
+  "a": {
+    t: 20,
+    f: {
+      "b": 3,
+      "c": "b" + 6,
+      "d": "c" + 8,
+      "e": "d" + 2,
+      "f": "e" + 1
+    }
+  }
+}
+```
+... resulting in ...
+
+```json
+{
+  "a": {
+    t: 20,
+    f: {
+      "b": 3,
+      "c": 9,
+      "d": 17,
+      "e": 19,
+      "f": 20
+    }
+  }
+}
+```
+These weights are divided by the total and used as boundaries for the random number generation. Meaning a random number between 0.95 and 1 would result in an "f" being appended to the output. This cycle continues until the desired output length is reached or the output ends in the provided endflag. The result is being returned as a string.
+
+The process for word based markov is similar, but instead of a string, the learner takes an array of words as input, while the generator will likewise return an array of words as output. If this is not desired, the method `Markov.stringify(array)` will convert this array of words into readable text.
+
+
 ## Creating a New Model
 
 An empty model is automatically created when creating the markov object. It can be reset using 
