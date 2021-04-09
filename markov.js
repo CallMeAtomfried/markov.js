@@ -22,12 +22,7 @@ function getRanges(word, words, contextsize){
       var followup = words.w[word].f;
       var nw = word;
 
-      //another failsave that tries to get a random word to continue checking. again, unfavorable but it saves the whole thing with smaller models
-      while(followup == undefined){
-        nw = nw.substr(1);
-        followup = words.w[nw].f;
-        if(nw == "") followup = randomProperty(words.w);
-      }
+      
 
       //get the characters that follow the word
       var ranges = [];
