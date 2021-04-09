@@ -259,18 +259,18 @@ module.exports = class Markov {
   
   merge(mergeModel) {
 	  //Merge this.model with given model
-	  if(mergeModel.wordbased != this.model.wordbased) throw Error("Can't merge letter based models with word based models!");
-	  if(mergeModel.w == undefined) throw Error("Can't merge empty model");
-	  for(var x in mergeModel.w) {
+	  if(mergeModel.model.wordbased != this.model.wordbased) throw Error("Can't merge letter based models with word based models!");
+	  if(mergeModel.model.w == undefined) throw Error("Can't merge empty model");
+	  for(var x in mergeModel.model.w) {
 		  if(this.model.w[x] == undefined) {
-			  this.model.w[x] = mergeModel.w[x];
+			  this.model.w[x] = mergeModel.model.w[x];
 		  } else {
 			  this.model.w[x].t += mergeModel.w[x].t;
-			  for(var y in mergeModel.w[x].f) {
+			  for(var y in mergeModel.model.w[x].f) {
 				  if(this.model.w[x].f[x] == undefined) {
-					  this.model.w[x].f[y] = mergeModel.w[x].f[y];
+					  this.model.w[x].f[y] = mergeModel.model.w[x].f[y];
 				  } else {
-					  this.model.w[x].f[y] += mergeModel.w[x].f[y];
+					  this.model.w[x].f[y] += mergeModel.model.w[x].f[y];
 				  }
 			  }
 		  }
