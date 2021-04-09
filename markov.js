@@ -265,7 +265,7 @@ module.exports = class Markov {
 		  if(this.model.w[x] == undefined) {
 			  this.model.w[x] = mergeModel.model.w[x];
 		  } else {
-			  this.model.w[x].t += mergeModel.w[x].t;
+			  this.model.w[x].t += mergeModel.model.w[x].t;
 			  for(var y in mergeModel.model.w[x].f) {
 				  if(this.model.w[x].f[x] == undefined) {
 					  this.model.w[x].f[y] = mergeModel.model.w[x].f[y];
