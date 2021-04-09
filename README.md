@@ -191,17 +191,13 @@ markov.merge(anotherMarkov);
 
 ## Upcoming features
 
-Ability to train the model based on words instead of characters. Everything will stay the same, but it will take an array of words instead of a string, yet still return a string.
-Word based markov will use significantly more RAM and storage but the results are even more coherent. It requires an even larger dataset for interesting results.
-
-
 Other more direct moderation tools will be available soon, like full replacement, which is useful for word based models where certain words slip in that you want to avoid, these can be removed or replaced altogether.
 Direct access to data is also in the works for potential debugging purposes, as the models can get quite large. A search function, if you will. 
 
+
 # Image Markov
 
-main.js requires markov.js to run, but is a quick console implementation. You will also need the folders. Put your input images in the inputImages folder, your output gets put in outputImages. 
-
+main.js requires markov.js to run, but is a quick console implementation. 
 It uses Jimp to read and write the images. More information on [JIMP!](https://www.npmjs.com/package/jimp)
 
 ```
@@ -214,3 +210,5 @@ To use imagemarkov.js, just run
 node imagemarkov.js "filename.png" -l -g
 ```
 Where -l will learn the image and -g will generate it. Trying to generate an image without learning first doesnt work for obvious reasons. 
+
+imagemarkov.js is more of an example of how you can use it to generate glitch art like results. For some images and with some tweaks it can even be used to fill in holes in the image, but, again, its more of a fun toy instead of something thats actually useful for data reconstruction, since in order for it to work you will need the original image. 
