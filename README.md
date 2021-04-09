@@ -185,7 +185,7 @@ var anotherMarkov = new Markov();
 markov.learn("some arbitrary string", 4);
 anotherMarkov.learn("another arbitrary string", 4);
 
-markov.merge(anotherMarkov.model);
+markov.merge(anotherMarkov);
 ```
 
 
