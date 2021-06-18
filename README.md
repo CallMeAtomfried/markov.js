@@ -4,11 +4,12 @@ markov.js is the node module. mkney.js is obsolete experimental stuff and does n
 Markov.py is WIP, will be an intercompatible port of markov.js, as in data trained with one will be possible to read with the other. 
 main.js is a console implementation of image markov using markov.js. Its run from the commandline. Details [HERE](https://github.com/CallMeAtomfried/notmarkov/blob/main/README.md#image-markov)
 
-
+### Installation:
+either via
 ```
 npm install ooer-markov
 ```
-SHOULD work
+or just by dragging the markov.js file where ever you need it. 
 
 ## Node module
 
