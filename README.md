@@ -6,7 +6,7 @@ main.js is a console implementation of image markov using markov.js. Its run fro
 
 
 ```
-npm install markov-js
+npm install ooer-markov
 ```
 SHOULD work
 
