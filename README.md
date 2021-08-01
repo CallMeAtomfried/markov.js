@@ -17,6 +17,8 @@ The markov.js can be put anywhere. In the examples, it will be located in the ma
 
 ```js
 const Markov = require("./markov.js");
+// OR
+const Markov = require("ooer-markov") // requires prior installation via npm
 ```
 
 It consists of a class called `Markov`, which contains all the required functionality. 
