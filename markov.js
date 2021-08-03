@@ -169,10 +169,12 @@ module.exports = class Markov {
     this.model = {"w":{}};
   } 
   
-
-
-  
+	//to be phased out
   reproduce(length, l_context, startstring, endflag){
+	  generate(length, l_context, startstring, endflag);
+  }
+  
+  generate(length, l_context, startstring, endflag){
     if(typeof length !== "number" || typeof l_context !== "number") throw TypeError(`Markov.reproduce expexts reproduce(number, number), got reproduce(${typeof length}, ${typeof l_context})`)
     //get random word to start generating
     var start = startstring || randomProperty(this.model.w);
@@ -213,16 +215,17 @@ module.exports = class Markov {
   if(!output) throw new Error("No output data", this, 82)
   return output || "Not enough data!"; 
   }
-    
   
-  stringify(inputArray) {
+   stringify(inputArray) {
 	  if (typeof inputArray !== "object") throw Error("Method stringify expected an array"); 
 	  var output = "";
 	  for (var w in inputArray) {
-		  output += inputArray[w]
+		output += `${inputArray[w]} `
 	  }
 	  return output;
   }
+  
+  
   
   search(searchString) {
     return this.model.w[searchString];
