@@ -150,24 +150,28 @@ You can continuously feed the object more and more data and it will simply "appe
 
 To learn based on characters, pass a string as the first argument. The module will return a string. To learn based on words or other types, simply pass an array. The result will also be an array. Note that word based markov models take up more RAM and storage, should you save the model. Do NOT mix character and word based learning in the same model. It does not yet differenciate between these two and thus it can lead to problems.
 
-#### Reproducing
+#### Generating text
 
-To generate new text, call the reproduce method. It takes two integers, the first being the maximum length of the text that is to be generated, the second one is the context size it should use to generate text. 
+(Formerly known as reproduce)
+
+To generate new text, call the generate method. It takes two integers, the first being the maximum length of the text that is to be generated, the second one is the context size it should use to generate text. 
 It is capable of automatically detecting if the desired context size is too big for the dataset and adjust automatically. It will however not detect if the dataset supports a bigger context size (yet). 
-Reproduction of text will start at a random point and only end if the specified character limit is reached or if nothing is being found with which the text can be continued. This can especially happen with smaller datasets. 
+Generating of text will start at a random point and only end if the specified character limit is reached or if nothing is being found with which the text can be continued. This can especially happen with smaller datasets. 
+
+For backwards compatibility, the reproduce method still works, the inner workings also are the same for both methods.
 
 ```js
-markov.reproduce(1000, 4);
+markov.generate(1000, 4);
 ```
 
 Optional start and end flags can now be provided. 
 
 ```js
-markov.reproduce(1000, 4, "Start")
+markov.generate(1000, 4, "Start")
 ```
 or
 ```js
-markov.reproduce(1000, 4, "Start", "End");
+markov.generate(1000, 4, "Start", "End");
 ```
 
 To define an end flag but not a start flag, set the start flag to `null`
