@@ -215,7 +215,14 @@ module.exports = class Markov {
   }
     
   
-  
+  stringify(inputArray) {
+	  if (typeof inputArray !== "object") throw Error("Method stringify expected an array"); 
+	  var output = "";
+	  for (var w in inputArray) {
+		  output += inputArray[w]
+	  }
+	  return output;
+  }
   
   search(searchString) {
     return this.model.w[searchString];
